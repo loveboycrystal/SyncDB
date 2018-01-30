@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xsi:schemaLocation="
+	    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+ 	 <bean id="multipleDataSource" class="com.loveboy.util.MultipleDataSource">
+        <property name="defaultTargetDataSource" ref="oaDataSource"/>
+        <property name="targetDataSources">
+            <map>
+                <entry key="oaDataSource" value-ref="oaDataSource"/>
+                <entry key="dcDataSource" value-ref="dcDataSource"/>
+            </map>
+        </property>
+    </bean>
+  
+  	<tx:jta-transaction-manager />
+  	
+     <!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dcDataSource" />
+	</bean>
+	    
+	<!-- 配置aop  -->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.loveboy.*.*(..))"/>
+    </aop:config>
+    
+ 
+    
+	<!-- 通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 传播行为 -->
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    
+
+
+ 
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="multipleDataSource" />
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"></property>  
+        <property name="mapperLocations" value="classpath:com/loveboy/dao/*/*.xml"></property>
+        <property name="transactionFactory">
+	    <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+	  </property>
+    </bean> 
+    
+
+   <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean id="mybatisMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.loveboy.dao.*" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+    
+ 
+
+    
+ 
+    
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

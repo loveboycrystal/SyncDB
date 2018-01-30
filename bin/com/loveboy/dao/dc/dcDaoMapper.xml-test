@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.loveboy.dao.dc.DCDaoMapper">
+	<insert id="saveOrUpdateDept" parameterType="com.loveboy.vo.DCDepartmentVo">
+	  	<selectKey keyProperty="count" resultType="int" order="BEFORE">
+	    	select count(*) count from ${tableName} where fd_id = #{fdId}
+	 	</selectKey>
+	  	<if test="count > 0">
+	   		update ${tableName} 
+	    		set fd_id = #{fdId},fd_parentid = #{fdParentid},gid=#{gid},gname=#{gname},qzh=#{qzh}
+	    	where fd_Id = #{fdId}
+		</if>
+		<if test="count==0">
+		    insert into ${tableName} (did,fd_id,fd_parentid,gid,qzh,gname) 
+		     values 
+		    (#{did},#{fdId},#{fdParentid},#{gid},#{qzh},#{gname})
+		</if>
+	</insert>
+	
+	<insert id="saveOrUpdateUser" parameterType="com.loveboy.vo.DCUserVo" keyProperty="did" useGeneratedKeys="true" >
+	  	<selectKey keyProperty="count" resultType="int" order="BEFORE">
+	    	select count(*) count from ${tableName} where fd_id = #{fdId}
+	 	</selectKey>
+	  	<if test="count > 0">
+	   		update ${tableName} 
+	    		set fd_id=#{fdId},fd_parentid=#{fdParentid},usercode=#{usercode},username=#{username},passwd=#{passwd}
+	    	where fd_Id = #{fdId}
+		</if>
+		<if test="count==0">
+			insert into ${tableName} (did,fd_id,fd_parentid,usercode,username,passwd)
+			 values 
+			(#{did},#{fdId},#{fdParentid},#{usercode},#{username},#{passwd})
+		</if>
+	</insert>
+	
+	<insert id="saveOrUpdateRose" parameterType="com.loveboy.vo.DCRoseVo" >
+	  	<selectKey keyProperty="count" resultType="int" order="BEFORE">
+	    	select count(*) count from ${tableName} where yhid = #{yhid}
+	 	</selectKey>
+	  	<if test="count > 0">
+	   		update ${tableName} 
+	    		set jsid = #{jsid}
+	    	where yhid = #{yhid} and jsid!=5
+		</if>
+		<if test="count==0">
+			insert into ${tableName} (did,yhid,jsid)
+			 values 
+			(#{did},#{yhid},#{jsid})
+		</if>
+		
+	</insert>
+	
+	
+	<select id="selectDeptByFdids" resultType="com.loveboy.vo.DCDepartmentVo"  parameterType="java.util.List">  
+		 select * from mydcdept where fd_id in  
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		 </foreach>  
+	</select>  
+	
+	<select id="selectUsertByFdids" resultType="com.loveboy.vo.DCUserVo" parameterType="java.util.List">  
+		 select * from  mydcuser where fd_id in  
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		 </foreach>  
+	</select>  
+
+</mapper>

@@ -1,0 +1,28 @@
+#是否保存到数据库(TRUE为保存，FALSE为不保存 不区分大小写)
+isSaveDB=false
+#执行频率（小时）
+synchRate=2
+#OA系统db数据库配置
+oa.jdbc.driver=com.mysql.jdbc.Driver
+oa.jdbc.url=jdbc\:mysql\://192.168.100.40\:3306/xcxdb?serverTimezone\=UTC&useUnicode\=true&characterEncoding\=utf8
+oa.jdbc.username=liveedu
+oa.jdbc.password=Live_123
+oa.validationQuery=SELECT 1 
+oa.pool.initialSize=20
+oa.pool.maxActive=50
+oa.pool.minIdle=15
+oa.pool.maxWait=60000
+
+#档案系统db配置
+dc.jdbc.driver=com.mysql.jdbc.Driver
+dc.jdbc.url=jdbc\:mysql\://192.168.100.40\:3306/livedb?serverTimezone\=UTC&useUnicode\=true&characterEncoding\=utf8
+dc.jdbc.username=liveedu
+dc.jdbc.password=Live_123
+dc.validationQuery=SELECT 1 
+dc.pool.initialSize=20
+dc.pool.maxActive=50
+dc.pool.minIdle=15
+dc.pool.maxWait=60000
+
+
+          

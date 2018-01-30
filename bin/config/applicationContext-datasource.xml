@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	
+	<!-- OA系统数据库数据源 -->
+	<!-- <bean name="oaDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">  -->
+	<bean name="oaDataSource" class="org.apache.commons.dbcp.BasicDataSource" >
+		<property name="driverClassName" value="${oa.jdbc.driver}" />
+		<property name="url" value="${oa.jdbc.url}" />
+		<property name="username" value="${oa.jdbc.username}" />
+		<property name="password" value="${oa.jdbc.password}" />
+
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${oa.pool.initialSize}" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="${oa.pool.maxActive}" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${oa.pool.minIdle}" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${oa.pool.maxWait}" />
+
+		<property name="validationQuery" value="${oa.validationQuery}" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+	
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" /> 
+	
+	</bean>
+	
+	
+	<!-- 档案系统数据库数据源 -->
+ <!-- <bean name="dcDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">  -->
+<bean name="dcDataSource" class="org.apache.commons.dbcp.BasicDataSource" >
+		<property name="driverClassName" value="${dc.jdbc.driver}" />
+		<property name="url" value="${dc.jdbc.url}" />
+		<property name="username" value="${dc.jdbc.username}" />
+		<property name="password" value="${dc.jdbc.password}" />
+
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${dc.pool.initialSize}" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="${dc.pool.maxActive}" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${dc.pool.minIdle}" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${dc.pool.maxWait}" />
+
+		<!-- <property name="validationQuery" value="${dc.validationQuery}" /> -->
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+	
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" /> 
+	
+	</bean>
+	
+</beans>
